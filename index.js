@@ -107,3 +107,17 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// 8. Xem chi tiết notification theo ID
+app.get('/notifications/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const doc = await db.collection('notifications').doc(id).get();
+    if (!doc.exists) {
+      return res.status(404).send({ error: 'Notification not found' });
+    }
+    res.status(200).send({ id: doc.id, ...doc.data() });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
