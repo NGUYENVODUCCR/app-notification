@@ -3,7 +3,19 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-const serviceAccount = require("./firebase-service-account.json");
+// Nạp service account từ biến môi trường, fallback file local khi dev
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+  } catch (err) {
+    console.error("Invalid JSON in FIREBASE_SERVICE_ACCOUNT_JSON:", err);
+    process.exit(1);
+  }
+} else {
+  // Chỉ sử dụng file này khi chạy local và chưa có ENV
+  serviceAccount = require("./firebase-service-account.json");
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -18,13 +30,14 @@ app.post("/send-notification", async (req, res) => {
 
   const message = {
     notification: { title, body },
-    token: token,
+    token,
   };
 
   try {
     const response = await admin.messaging().send(message);
     res.status(200).send({ success: true, response });
   } catch (error) {
+    console.error("Error sending message:", error);
     res.status(500).send({ success: false, error: error.message });
   }
 });
