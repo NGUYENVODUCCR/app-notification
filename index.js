@@ -38,12 +38,23 @@ app.post("/send-notification", async (req, res) => {
   try {
     const response = await admin.messaging().send(message);
 
+    // Lấy thời gian hiện tại
+    const now = new Date();
+    const formattedDate = now.toLocaleString("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     // Lưu vào Firestore
     await db.collection("notifications").add({
       token,
       title,
       body,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: formattedDate,
     });
 
     res.status(200).send({ success: true, response });
