@@ -1,0 +1,42 @@
+# Node modules
+node_modules/
+# Flutter/Dart related
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+generated_plugin_registrant.dart
+
+# iOS
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/ServiceDefinitions.json
+ios/Runner.xcworkspace/
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/Flutter/App.framework
+ios/Flutter/engine/
+
+# Android
+android/.gradle/
+android/captures/
+android/app/build/
+android/local.properties
+android/key.properties
+
+# VS Code & IntelliJ
+.vscode/
+.idea/
+*.iml
+
+# Firebase credentials or other secrets
+firebase-service-account.json
+
+# Others
+*.log
+*.lock
+*.tmp
+*.swp
