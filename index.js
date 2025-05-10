@@ -3,17 +3,21 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const cors = require("cors");
 
-// Nạp service account từ biến môi trường, fallback file local khi dev
 let serviceAccount;
 if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
   try {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+
+    if (serviceAccount.private_key) {
+      serviceAccount.private_key = serviceAccount.private_key
+        .replace(/\\n/g, "\n")
+        .trim();
+    }
   } catch (err) {
     console.error("Invalid JSON in FIREBASE_SERVICE_ACCOUNT_JSON:", err);
     process.exit(1);
   }
 } else {
-  // Chỉ sử dụng file này khi chạy local và chưa có ENV
   serviceAccount = require("./firebase-service-account.json");
 }
 
