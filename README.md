@@ -1,5 +1,5 @@
 # app-notification 
-# backend: flutter
-# frontend: html
+# backend: nodejs
+# frontend: flutter-app
 # deploy: render
 # database server: firebase
